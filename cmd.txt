@@ -1,0 +1,67 @@
+# Initialiser un dépôt Git
+git init
+
+# Ajouter un fichier .gitignore pour ignorer les fichiers inutiles
+echo "vendor/" > .gitignore
+echo "node_modules/" >> .gitignore
+echo ".env" >> .gitignore
+
+# Ajouter tous les fichiers à Git
+git add .
+
+# Commiter les fichiers
+git commit -m "Initial commit"
+
+# Ajouter le dépôt distant (remplacez par votre propre URL de dépôt)
+git remote add origin https://github.com/ddubost6998/tp-environement-dev.git
+
+# Pousser les changements sur la branche main
+git push -u origin main
+
+# Utiliser une image PHP officielle
+FROM php:7.4-apache
+
+# Copier le code de l'application dans le dossier par défaut de l'Apache
+COPY . /var/www/html/
+
+# Installer les extensions PHP nécessaires
+RUN docker-php-ext-install mysqli
+
+# Ajouter les nouveaux fichiers au dépôt
+git add .
+
+# Commiter les fichiers
+git commit -m "Setup Docker environment with PHP and MySQL"
+
+# Pousser les changements sur la branche main
+git push origin main
+
+# Créer et switcher sur la branche develop
+git checkout -b develop
+
+# Pousser la branche develop
+git push -u origin develop
+
+# Créer et switcher sur la branche feature/database-setup
+git checkout -b feature/database-setup
+
+# Pousser la branche feature/database-setup
+git push -u origin feature/database-setup
+
+# Ajouter les changements
+git add database.sql
+
+# Commiter les changements
+git commit -m "Add insert queries for test employees"
+
+# Pousser les changements
+git push origin feature/database-setup
+
+# Switcher sur la branche develop
+git checkout develop
+
+# Fusionner la branche feature/database-setup dans develop
+git merge feature/database-setup
+
+# Pousser les changements sur la branche develop
+git push origin develop
